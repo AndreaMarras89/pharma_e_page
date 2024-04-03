@@ -2,7 +2,6 @@
 
 from fastapi import Depends, FastAPI
 
-
 from backend.api.routers import router
 
 

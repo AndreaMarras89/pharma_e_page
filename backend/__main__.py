@@ -1,10 +1,9 @@
-"""Main Entrypoint.""" 
+"""Main Entrypoint."""
 
 import argparse
 
 import gunicorn.app.base
 from gunicorn.glogging import Logger
-
 from loguru import logger
 
 from backend.app import app
@@ -36,12 +35,12 @@ class StandaloneApplication(gunicorn.app.base.BaseApplication):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser() 
+    parser = argparse.ArgumentParser()
     parser.add_argument("--workers", type=int, default=config.default_workers)
     parser.add_argument("--bind", type=str, default=f"0.0.0.0:{config.server_port}")
-    parser.add_argument("--timeout", type=str, default=str(config.default_timeout))  
+    parser.add_argument("--timeout", type=str, default=str(config.default_timeout))
     args = parser.parse_args()
-    
+
     options = {
         "bind": args.bind,
         "workers": args.workers,

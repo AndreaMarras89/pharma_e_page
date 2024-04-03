@@ -1,12 +1,17 @@
 """Endpoint Definition"""
 
-from backend.db.utils import DatabaseSessionMaker
 from fastapi import APIRouter, HTTPException
+from sqlalchemy import and_, delete, insert, select, update
 
-from backend.db.tables import Product as ProductTable, User, UserCart
-from backend.api.models import Product, ProductListOutput, ProductDetailsInput, ProductDetailsOutput, ProductAddCartInput, ProductAddCartOutput, ProductRemovalAllInput, ProductRemovalAllOutput
-from sqlalchemy import select, and_, insert, update, delete
-
+from backend.api.models import (InfoInvoicingInput, InfoInvoicingOutput,
+                                Product, ProductAddCartInput,
+                                ProductAddCartOutput, ProductDetailsInput,
+                                ProductDetailsOutput, ProductListOutput,
+                                ProductRemovalAllInput,
+                                ProductRemovalAllOutput)
+from backend.db.tables import Product as ProductTable
+from backend.db.tables import User, UserCart, UserDataInvoicing
+from backend.db.utils import DatabaseSessionMaker
 
 session_maker = DatabaseSessionMaker()
 
@@ -47,13 +52,20 @@ async def product_list() -> ProductListOutput:
             product_list = []
             if records and len(records) > 0:
                 for record in records:
-                    product_list.append(Product(id = str(record[0].id), name = record[0].name, price = record[0].price, description = record[0].description, image = record[0].image))
-        return ProductListOutput(products = product_list)
+                    product_list.append(
+                        Product(
+                            id=str(record[0].id),
+                            name=record[0].name,
+                            price=record[0].price,
+                            description=record[0].description,
+                            image=record[0].image,
+                        )
+                    )
+        return ProductListOutput(products=product_list)
     except Exception as error:
         raise HTTPException(status_code=500, detail=str(error))
 
-    
-    
+
 @router.post("/product_details")
 async def product_details(payload: ProductDetailsInput) -> ProductDetailsOutput:
     """Logic of the product_details endpoint"""
@@ -68,7 +80,7 @@ async def product_details(payload: ProductDetailsInput) -> ProductDetailsOutput:
                     product_name=record[0].name,
                     product_description=record[0].description,
                     product_price=record[0].price,
-                    product_image=record[0].image
+                    product_image=record[0].image,
                 )
             else:
                 raise HTTPException(
@@ -77,7 +89,7 @@ async def product_details(payload: ProductDetailsInput) -> ProductDetailsOutput:
                 )
     except Exception as error:
         raise HTTPException(status_code=500, detail=str(error))
-    
+
 
 @router.post("/add_product")
 async def add_to_cart(payload: ProductAddCartInput) -> ProductAddCartOutput:
@@ -127,7 +139,7 @@ async def add_to_cart(payload: ProductAddCartInput) -> ProductAddCartOutput:
         return ProductAddCartOutput(added=True)
     except Exception as error:
         raise HTTPException(status_code=500, detail=str(error))
-    
+
 
 @router.post("/product_removal_all")
 async def product_removal_all(
@@ -145,5 +157,25 @@ async def product_removal_all(
             result = await session.execute(my_sql)
             await session.commit()
             return ProductRemovalAllOutput(removed=True)
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=str(error))
+
+
+@router.post("/info_invoicing")
+async def add_info_invoicing(payload: InfoInvoicingInput) -> InfoInvoicingOutput:
+    try:
+        async with session_maker.get_session() as session:
+            my_query = insert(UserDataInvoicing).values(
+                user_ID=payload.user_ID,
+                name=payload.name,
+                last_name=payload.last_name,
+                cf=payload.cf,
+                address=payload.address,
+                billing_address=payload.billing_address,
+            )
+            compile = my_query.compile()
+            result = await session.execute(my_query)
+            await session.commit()
+            return InfoInvoicingOutput(success=True)
     except Exception as error:
         raise HTTPException(status_code=500, detail=str(error))
