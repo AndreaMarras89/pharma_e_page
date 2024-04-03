@@ -1,14 +1,19 @@
 """Endpoint Definition"""
 
+from datetime import datetime
+from uuid import uuid4
+
 from fastapi import APIRouter, HTTPException
 from sqlalchemy import and_, delete, insert, select, update
 
 from backend.api.models import (InfoInvoicingInput, InfoInvoicingOutput,
+                                OrderCreationInput, OrderCreationOutput,
                                 Product, ProductAddCartInput,
                                 ProductAddCartOutput, ProductDetailsInput,
                                 ProductDetailsOutput, ProductListOutput,
                                 ProductRemovalAllInput,
                                 ProductRemovalAllOutput)
+from backend.db.tables import Orders
 from backend.db.tables import Product as ProductTable
 from backend.db.tables import User, UserCart, UserDataInvoicing
 from backend.db.utils import DatabaseSessionMaker
@@ -177,5 +182,36 @@ async def add_info_invoicing(payload: InfoInvoicingInput) -> InfoInvoicingOutput
             result = await session.execute(my_query)
             await session.commit()
             return InfoInvoicingOutput(success=True)
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=str(error))
+
+
+@router.post("/orders")
+async def order_creation(payload: OrderCreationInput) -> OrderCreationOutput:
+    try:
+        async with session_maker.get_session() as session:
+            my_sql = select(UserCart).where(UserCart.user_id == payload.user_ID)
+            result = await session.execute(my_sql)
+            records = result.fetchall()
+            if records and len(records) > 0:
+                order_ID = uuid4()
+                current_date = datetime.now()
+                for record in records:
+                    my_sql = insert(Orders).values(
+                        order_id=order_ID,
+                        user_id=payload.user_ID,
+                        product_id=record[0].product_id,
+                        quantity=record[0].quantity,
+                        time=current_date,
+                    )
+                    compile = my_sql.compile()
+                    result = await session.execute(my_sql)
+                    await session.commit()
+                return OrderCreationOutput(order_id=order_ID)
+            else:
+                raise HTTPException(
+                    status_code=404,
+                    detail=f"user with ID {payload.user_ID} not found",
+                )
     except Exception as error:
         raise HTTPException(status_code=500, detail=str(error))

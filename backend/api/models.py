@@ -77,3 +77,15 @@ class InfoInvoicingOutput(BaseModel):
     """Output model for the info about the invoice"""
 
     success: bool
+
+
+class OrderCreationInput(BaseModel):
+    """Input for the creation of the order"""
+
+    user_ID: UUID4
+
+
+class OrderCreationOutput(BaseModel):
+    """Output for the creation of the order"""
+
+    order_id: UUID4
