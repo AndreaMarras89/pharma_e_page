@@ -45,3 +45,14 @@ class ProductDetailsOutput(BaseModel):
     product_description: str
     product_price: float
     product_image: str
+    
+class ProductRemovalAllInput(BaseModel):
+    """Input model for product_removal_all endpoint"""
+
+    user_id: UUID4
+
+
+class ProductRemovalAllOutput(BaseModel):
+    """Output model for product_removal_all endpoint"""
+
+    removed: bool

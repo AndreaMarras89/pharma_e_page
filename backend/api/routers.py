@@ -4,8 +4,8 @@ from backend.db.utils import DatabaseSessionMaker
 from fastapi import APIRouter, HTTPException
 
 from backend.db.tables import Product as ProductTable, User, UserCart
-from backend.api.models import Product, ProductListOutput, ProductDetailsInput, ProductDetailsOutput, ProductAddCartInput, ProductAddCartOutput
-from sqlalchemy import select, and_, insert, update
+from backend.api.models import Product, ProductListOutput, ProductDetailsInput, ProductDetailsOutput, ProductAddCartInput, ProductAddCartOutput, ProductRemovalAllInput, ProductRemovalAllOutput
+from sqlalchemy import select, and_, insert, update, delete
 
 
 session_maker = DatabaseSessionMaker()
@@ -125,5 +125,25 @@ async def add_to_cart(payload: ProductAddCartInput) -> ProductAddCartOutput:
                     detail=f"Product ID or UserID not found in the database",
                 )
         return ProductAddCartOutput(added=True)
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=str(error))
+    
+
+@router.post("/product_removal_all")
+async def product_removal_all(
+    payload: ProductRemovalAllInput,
+) -> ProductRemovalAllOutput:
+    """Logic of the product_removal_all endpoint"""
+
+    try:
+        if not check_user_exists(payload.user_id):
+            raise HTTPException(status_code=404, detail="User not found")
+
+        async with session_maker.get_session() as session:
+            my_sql = delete(UserCart).where(UserCart.user_id == payload.user_id)
+            compile = my_sql.compile()
+            result = await session.execute(my_sql)
+            await session.commit()
+            return ProductRemovalAllOutput(removed=True)
     except Exception as error:
         raise HTTPException(status_code=500, detail=str(error))
