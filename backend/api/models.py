@@ -14,12 +14,23 @@ class Product(BaseModel):
     image: str
 
 
-
-#Lista Prodotti
 class ProductListOutput(BaseModel):
     """Output model for search endpoint"""
 
     products: List[Product]
+    
+class ProductAddCartInput(BaseModel):
+    """Input model for add_product endpoint"""
+
+    user_id: UUID4
+    product_id: UUID4
+    quantity: int = 1
+
+
+class ProductAddCartOutput(BaseModel):
+    """Output model for add_product endpoint"""
+
+    added: bool
     
 class ProductDetailsInput(BaseModel):
     """Input model for product_details endpoint"""
