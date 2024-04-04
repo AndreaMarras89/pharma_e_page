@@ -9,11 +9,12 @@ from sqlalchemy import and_, delete, insert, select, update
 from backend.api.models import (CartListInput, CartListOutput,
                                 InfoInvoicingInput, InfoInvoicingOutput,
                                 OrderCreationInput, OrderCreationOutput,
+                                OrderUserHistoryInput, OrderUserHistoryOutput,
                                 Product, ProductAddCartInput,
                                 ProductAddCartOutput, ProductDetailsInput,
                                 ProductDetailsOutput, ProductInCart,
                                 ProductListOutput, ProductRemovalAllInput,
-                                ProductRemovalAllOutput)
+                                ProductRemovalAllOutput, UserOrder)
 from backend.db.tables import Orders
 from backend.db.tables import Product as ProductTable
 from backend.db.tables import User, UserCart, UserDataInvoicing
@@ -254,5 +255,28 @@ async def cart_list_items(payload: CartListInput) -> CartListOutput:
                             )
                         )
             return ProductListOutput(products=cart_products)
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=str(error))
+
+
+@router.post("/order_history")
+async def order_history(payload: OrderUserHistoryInput) -> OrderUserHistoryOutput:
+    try:
+        async with session_maker.get_session() as session:
+            my_sql = (
+                select(Orders.order_id, Orders.time)
+                .distinct()
+                .where(Orders.user_id == payload.user_id)
+            )
+            result = await session.execute(my_sql)
+            records = result.fetchall()
+            order_history_list = []
+            if records and len(records) > 0:
+                for record in records:
+                    print(record)
+                    order_history_list.append(
+                        UserOrder(order_id=record[0], date=record[1])
+                    )
+            return OrderUserHistoryOutput(orders_list=order_history_list)
     except Exception as error:
         raise HTTPException(status_code=500, detail=str(error))

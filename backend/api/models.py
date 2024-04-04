@@ -1,5 +1,6 @@
 """Input&Output Intefaces definition"""
 
+from datetime import datetime
 from typing import List
 
 from pydantic import UUID4, BaseModel
@@ -19,6 +20,13 @@ class ProductInCart(Product):
     """Extension of the Product for the cart"""
 
     quantity: int
+
+
+class UserOrder(BaseModel):
+    """class for the order of the user"""
+
+    order_id: UUID4
+    date: datetime
 
 
 class ProductListOutput(BaseModel):
@@ -108,3 +116,15 @@ class CartListOutput(BaseModel):
     """The output of the cart"""
 
     products: list[ProductInCart]
+
+
+class OrderUserHistoryInput(BaseModel):
+    """Input of the history of the orders made by the user"""
+
+    user_id: UUID4
+
+
+class OrderUserHistoryOutput(BaseModel):
+    """Output of the history of the orders made by the user"""
+
+    orders_list: list[UserOrder]
