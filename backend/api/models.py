@@ -15,6 +15,12 @@ class Product(BaseModel):
     image: str
 
 
+class ProductInCart(Product):
+    """Extension of the Product for the cart"""
+
+    quantity: int
+
+
 class ProductListOutput(BaseModel):
     """Output model for search endpoint"""
 
@@ -48,6 +54,7 @@ class ProductDetailsOutput(BaseModel):
     product_description: str
     product_price: float
     product_image: str
+    quantity: int
 
 
 class ProductRemovalAllInput(BaseModel):
@@ -89,3 +96,15 @@ class OrderCreationOutput(BaseModel):
     """Output for the creation of the order"""
 
     order_id: UUID4
+
+
+class CartListInput(BaseModel):
+    """Input for the cart list"""
+
+    user_id: UUID4
+
+
+class CartListOutput(BaseModel):
+    """The output of the cart"""
+
+    products: list[ProductInCart]
