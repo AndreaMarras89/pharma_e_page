@@ -1,0 +1,15 @@
+{% block content %}
+<body>
+  <h2>Product List</h2>
+  <button id="showProductsButton">Show Products</button>
+  <div id="productList"></div>
+
+  <button id="Cart">Go to your cart</button>
+
+  <script>
+    document.getElementById("showProductsButton").addEventListener("click", function() {
+      window.location.href = "catalogue.html";
+    });
+    document.getElementById("Cart").addEventListener("click", function() {window.location.href = "cart.html"})
+  </script>
+{% endblock %}

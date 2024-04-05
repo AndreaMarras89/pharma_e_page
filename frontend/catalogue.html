@@ -1,0 +1,26 @@
+{% block content %}
+<h2>Product List</h2>
+{% for product in products %}
+  <p> - <strong>{{ product.name }}</strong></p>
+  <p>Price: {{ product.price }}€</p>
+  <p>Description: {{ product.description }}</p>
+  <form method="POST" action="{% url 'addToCart' %}">
+    {% csrf_token %}
+    <input type="hidden" name="product_id" value="{{ product.id }}">
+    <button type="submit">Add to Cart</button>
+  </form>
+  <form method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="product_id" value="{{ product.id }}">
+    <a href="{% url 'goToDetails' product_id=product.id %}" class="details">View details</a>
+  </form>
+{% endfor %}
+<button id="home">Home</button>
+<button id="order history">Order history</button>
+{% endblock %}
+
+
+<script>
+  document.getElementById("home").addEventListener("click", function() {window.location.href = "home.html"})
+  document.getElementById("order history").addEventListener("click", function() {window.location.href = "order_history.html"})
+</script>
