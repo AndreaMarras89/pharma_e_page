@@ -31,7 +31,8 @@ Or we could check our order history:
 ![alt text](screenshots/Order_History.png)
 
 
-I have created a backend application that implement all the logic and the necessity of the frontend part.
+I have created a backend application that implement all the logic and the necessity of the frontend part. I used fastAPI with Pydantic in order to control the information before being submitted to the database, so I created a layer of protection against SQL Injections and XSS attacks. By decoupling the frontend from the backend and having exposed the backend functionality through APIs, one could also add a security on the API itself making it even more robust.
+
 The technologies I decided to use are:
 - FastAPI to expose endpoints
 - Postgres as database
