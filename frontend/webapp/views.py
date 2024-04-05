@@ -13,17 +13,21 @@ register = template.Library
 def home(request):
     return render(request, "home.html")
 
+def error(request):
+    return render(request, "error_page.html")
 
 def catalogue(request):
     response = requests.get(f"{BACKEND_URL}/products_list")
-    data = response.json()
-    return render(
-        request,
-        "catalogue.html",
-        {
-            "products": data["products"],
-        },
-    )
+    if response.status_code == 200:
+        data = response.json()
+        return render(
+            request,
+            "catalogue.html",
+            {
+                "products": data["products"],
+            },
+        )
+    return redirect("/webapp/error_page.html")
     
 def addToCart(request):
     if request.method == "POST":
@@ -39,25 +43,28 @@ def addToCart(request):
         if response.status_code == 200:
             return redirect("/webapp/catalogue.html")
         else:
-            return JsonResponse(
-                {"success": False, "error": "Failed to add product to cart"}
-            )
+            return redirect("/webapp/error_page.html")
     else:
-        return JsonResponse({"success": False, "error": "Invalid request method"})
+        return redirect("/webapp/error_page.html")
+    
+def productDetails(request):
+    return render(request, "details.html")
     
 def showCart(request):
     response = requests.post(
         f"{BACKEND_URL}/cart_details",
         json={"user_id": DEFAULT_USER_ID},
     )
-    data = response.json()
-    return render(
-        request,
-        "cart.html",
-        {
-            "products": data["products"],
-        },
-    )
+    if response.status_code == 200:
+        data = response.json()
+        return render(
+            request,
+            "cart.html",
+            {
+                "products": data["products"],
+            },
+        )
+    return redirect("/webapp/error_page.html")
 
 
 def showBuy(request):
@@ -80,6 +87,7 @@ def goToDetails(request, product_id):
                 "image": data["product_image"]
             },
         )
+    return redirect("/webapp/error_page.html")
 
 
 def InvoiceInformation(request):
@@ -100,26 +108,45 @@ def InvoiceInformation(request):
                 "billing_address": billing_address,
             },
         )
+        if response_invoicing.status_code != 200:
+            return redirect("/webapp/error_page.html")
 
         data_invoicing = response_invoicing.json()
-
+        
         response_order = requests.post(
             f"{BACKEND_URL}/orders",
             json={"user_ID": DEFAULT_USER_ID},
         )
+        
+        if response_order.status_code != 200:
+            return redirect("/webapp/error_page.html")
+        
         data_order = response_order.json()
-
+        
         response_removal = requests.post(
             f"{BACKEND_URL}/product_removal_all",
             json={"user_id": DEFAULT_USER_ID},
         )
+        
+        if response_removal.status_code != 200:
+            return redirect("/webapp/error_page.html")
+        
         data_removal = response_removal.json()
 
-        if response_invoicing.status_code == 200:
-            order_id = data_order["order_id"]
-            removal_bool = data_removal["removed"]
-            return render(request, "order_successfull.html")
-        else:
-            return JsonResponse({"success": False, "error": "Failed"})
-    else:
-        return JsonResponse({"error": "GET method not allowed"})
+        order_id = data_order["order_id"]
+        removal_bool = data_removal["removed"]
+        return render(request, "order_successfull.html")
+    
+
+def orderHistory(request):
+    response = requests.post(f"{BACKEND_URL}/order_history", json={"user_id": DEFAULT_USER_ID})
+    if response.status_code == 200:
+        data = response.json()
+        return render(
+            request,
+            "order_history.html",
+            {
+                "orders": data["orders_list"]
+            }
+        )
+    return redirect("/webapp/error_page.html")

@@ -17,4 +17,6 @@ urlpatterns = [
         name="goToDetails",
     ),
     path("details.html", views.productDetails, name="details"),
+    path("order_history.html", views.orderHistory, name="order history"),
+    path("error_page.html", views.error, name="error")
 ]

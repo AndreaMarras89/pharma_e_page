@@ -1,0 +1,13 @@
+{% block content %}
+<h2>Order History</h2>
+{% for order in orders %}
+  <p><strong>Order number:</strong> {{ order.order_id }}</p>
+  <p><strong>Time:</strong> {{ order.date }}</p>
+  <br/>
+{% endfor %}
+<button id="home">Home</button>
+{% endblock %}
+
+<script>
+  document.getElementById("home").addEventListener("click", function() {window.location.href = "home.html"})
+</script>

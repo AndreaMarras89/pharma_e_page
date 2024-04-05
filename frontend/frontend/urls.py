@@ -20,7 +20,7 @@ from django.shortcuts import redirect
 from django.urls import include, path
 
 urlpatterns = [
-    path("", lambda rq:redirect("/webapp/") ),
+    path("", lambda rq: redirect("/webapp/")),
     path("webapp/", include("webapp.urls")),
     path("admin/", admin.site.urls),
 ]
