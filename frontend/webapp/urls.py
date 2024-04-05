@@ -18,5 +18,7 @@ urlpatterns = [
     ),
     path("details.html", views.productDetails, name="details"),
     path("order_history.html", views.orderHistory, name="order history"),
-    path("error_page.html", views.error, name="error")
+    path("error_page.html", views.error, name="error"),
+    path("emptyTheCart/", views.emptyTheCart, name="emptyTheCart"),
+    path("empty_cart_warning.html", views.emptyCartWarning, name="warning_empty_cart")
 ]

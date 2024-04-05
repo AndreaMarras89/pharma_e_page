@@ -12,6 +12,11 @@
 <button onclick="location.href = 'home.html'">Home</button>
 
 <button id="buy">Buy</button>
+
+<form method="POST" action="{% url 'emptyTheCart' %}">
+  {% csrf_token %}
+  <button type="submit">Empty cart</button>
+</form>
 {% endblock %}
 
 

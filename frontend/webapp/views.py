@@ -16,6 +16,9 @@ def home(request):
 def error(request):
     return render(request, "error_page.html")
 
+def emptyCartWarning(request):
+    return render(request, "empty_cart_warning.html")
+
 def catalogue(request):
     response = requests.get(f"{BACKEND_URL}/products_list")
     if response.status_code == 200:
@@ -68,7 +71,18 @@ def showCart(request):
 
 
 def showBuy(request):
-    return render(request, "buy.html")
+    response = requests.post(
+        f"{BACKEND_URL}/cart_details",
+        json={"user_id": DEFAULT_USER_ID},
+    )
+    if response.status_code == 200:
+        data = response.json()
+        if len(data["products"]) == 0:
+            return redirect("/webapp/empty_cart_warning.html")
+        return render(request, "buy.html")        
+    else:
+        return redirect("/webapp/error_page.html")
+
 
 def goToDetails(request, product_id):
     response = requests.post(
@@ -150,3 +164,16 @@ def orderHistory(request):
             }
         )
     return redirect("/webapp/error_page.html")
+
+
+def emptyTheCart(request):
+    response_removal = requests.post(
+            f"{BACKEND_URL}/product_removal_all",
+            json={"user_id": DEFAULT_USER_ID},
+        )
+        
+    if response_removal.status_code != 200:
+        return redirect("/webapp/error_page.html")
+    
+    data_removal = response_removal.json()
+    return redirect("/webapp/cart.html")
