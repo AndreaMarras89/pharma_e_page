@@ -223,6 +223,12 @@ docker-compose -up
 ```
 2) Execute the script to populate the database with the sample data 
 ```bash
-psql -h <IP_DATABASE> -p <PORT_DATABASE> -d postgres -U user < dump_file.sql
+psql -h <IP_DATABASE> -p <PORT_DATABASE> -d postgres -U user < sqlfile_real.sql
 ```
+default ip database is 10.0.0.15 and port is 5432
 
+3) Access the website by inserting in your browser:
+```bash
+http://<IP_FRONTEND>:<PORT_FRONTEND>/webapp/home.html
+```
+default ip of the frontend is 10.0.0.16 and port is 8000
