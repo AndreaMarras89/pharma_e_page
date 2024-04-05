@@ -98,11 +98,11 @@ class InfoInvoicingInput(BaseModel):
     """Input model for the info about the invoice"""
 
     user_ID: UUID4
-    name: str = Field(regex=r"^[a-zA-Z0-9\']+$")
-    last_name: str = Field(regex=r"^[a-zA-Z0-9\']+$")
-    cf: str = Field(regex=r"^[a-zA-Z0-9\']+$")
-    address: str = Field(regex=r"^[a-zA-Z0-9\']+$")
-    billing_address: str = Field(regex=r"^[a-zA-Z0-9\']+$")
+    name: str = Field(pattern=r"^[a-zA-Z0-9\']+$")
+    last_name: str = Field(pattern=r"^[a-zA-Z0-9\']+$")
+    cf: str = Field(pattern=r"^[a-zA-Z0-9\']+$")
+    address: str = Field(pattern=r"^[a-zA-Z0-9\']+$")
+    billing_address: str = Field(pattern=r"^[a-zA-Z0-9\']+$")
 
     class Config:
         extra = "forbid"
