@@ -10,4 +10,11 @@ urlpatterns = [
     path("addToCart/", views.addToCart, name="addToCart"),
     path("cart.html", views.showCart, name="showCart"),
     path("buy.html", views.showBuy, name="buy"),
+    path("order_successfull.html", views.InvoiceInformation, name="InvoiceInformation"),
+    path(
+        r"goToDetails/(?P<str:product_id>[^/]+)/\\Z/",
+        views.goToDetails,
+        name="goToDetails",
+    ),
+    path("details.html", views.productDetails, name="details"),
 ]

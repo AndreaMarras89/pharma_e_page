@@ -1,0 +1,24 @@
+{% block content %}
+{% load static %}
+
+<h2>
+<p>{{product_description}}</p>
+<p>{{product_price}}€</p>
+{% if availability %}
+  <p>available</p>
+{% else %}
+  <p>not available</p>
+{% endif %} 
+<img src="{% static image %}">
+</h2>
+
+<button onclick="location.href = '/webapp/catalogue.html'"> << Back</button>
+
+{% endblock %}
+
+
+<script>
+    document.getElementById("catalogue").addEventListener("click", function() {
+      window.location.href = "catalogue.html";
+    });
+</script>
