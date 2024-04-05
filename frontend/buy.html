@@ -1,0 +1,21 @@
+{% block content %}
+<form action="{% url 'InvoiceInformation' %}" method="post">
+    {% csrf_token %}
+    <label for="first_name">First name: </label>
+    <input id="first_name" type="text" name="first_name" value="{{ first_name }}">
+    <br />
+    <label for="last_name">Last name: </label>
+    <input id="last_name" type="text" name="last_name" value="{{ last_name }} ">
+    <br />
+    <label for="cf">CF: </label>
+    <input id="cf" type="text" name="cf" value="{{ cf }}">
+    <br />
+    <label for="address">Address: </label>
+    <input id="address" type="text" name="address" value="{{ address }}">
+    <br />
+    <label for="billing_address">Billing address: </label>
+    <input id="billing_address" type="text" name="billing_address" value="{{ billing_address }}">
+    <br />
+    <button id="InvoiceInformation">Ok</button>
+</form>
+{% endblock %}

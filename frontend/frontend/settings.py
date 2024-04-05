@@ -125,3 +125,7 @@ STATIC_URL = "/static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 STATICFILES_DIRS = [BASE_DIR / "static"]
+
+BACKEND_URL = "http://localhost:8089"
+
+DEFAULT_USER_ID = "34bd8a5f-1ff5-404b-9791-1d58ded5862d"
