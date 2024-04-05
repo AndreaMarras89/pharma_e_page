@@ -3,32 +3,32 @@
 
 I used django for the frontend part and it is divided in various html pages, a ```views.py``` file that creates the logic of the frontend application and a ```urls.py``` file that uses the path to connect the view, the enpoint to the html pages. I've create a home page that allows us to enter the product list or go to the cart.
 
-![alt text](/pharma_e_page/screenshots/Product_List.png)
+![alt text](screenshots/Product_List.png)
 
 By clicking on "go to your cart" it opens the cart page:
 
-![alt text](/pharma_e_page/screenshots/Cart_Information.png)
+![alt text](screenshots/Cart_Information.png)
 
 In the "my cart" section we have the possibility to go back to the home (available in every pages), the button to empty the cart and the one to buy. Also I introduced a check to see if the cart was empty or not, going to an error page if the cart is empty and we try to buy.
 If the cart is not empty and we decide to buy the products we are sent to the shipping and billing information page:
 
-![alt text](/pharma_e_page/screenshots/Billing_Shipping_Information.png)
+![alt text](screenshots/Billing_Shipping_Information.png)
 
 Here I apply the logic that will sanitize the input by checking if in the form are present some special characters. If all goes all right we should have this message:
 
-![alt text](/pharma_e_page/screenshots/Order_Inserted.png)
+![alt text](screenshots/Order_Inserted.png)
 
 Instead by entering the product list we have a list of the elements inside the database:
 
-![alt text](/pharma_e_page/screenshots/Product_List2.png)
+![alt text](screenshots/Product_List2.png)
 
 Here we have a button to add the single product inside our cart or a link to a more detailed description about the product that we have in store:
 
-![alt text](/pharma_e_page/screenshots/Details.png)
+![alt text](screenshots/Details.png)
 
 Or we could check our order history:
 
-![alt text](/pharma_e_page/screenshots/Order_History.png)
+![alt text](screenshots/Order_History.png)
 
 
 I have created a backend application that implement all the logic and the necessity of the frontend part.
