@@ -56,7 +56,8 @@ class UserDataInvoicing(Base):
 
     __tablename__ = "User_Data_Invoicing"
 
-    user_ID = Column("User_ID", UUID, primary_key=True)
+    id = Column("ID", UUID, primary_key=True)
+    user_ID = Column("User_ID", UUID)
     name = Column("Name", String)
     last_name = Column("Last_Name", String)
     cf = Column("CF", String)

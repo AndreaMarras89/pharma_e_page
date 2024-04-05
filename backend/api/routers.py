@@ -153,11 +153,9 @@ async def product_removal_all(
     payload: ProductRemovalAllInput,
 ) -> ProductRemovalAllOutput:
     """Logic of the product_removal_all endpoint"""
-
+    if not await check_user_exists(payload.user_id):
+        raise HTTPException(status_code=404, detail="User not found")
     try:
-        if not await check_user_exists(payload.user_id):
-            raise HTTPException(status_code=404, detail="User not found")
-
         async with session_maker.get_session() as session:
             my_sql = delete(UserCart).where(UserCart.user_id == payload.user_id)
             compile = my_sql.compile()
