@@ -65,6 +65,7 @@ async def product_list() -> ProductListOutput:
                             price=record[0].price,
                             description=record[0].description,
                             image=record[0].image,
+                            icon=record[0].icon,
                         )
                     )
         return ProductListOutput(products=product_list)
@@ -138,6 +139,7 @@ async def product_details(payload: ProductDetailsInput) -> ProductDetailsOutput:
                     product_price=record[0].price,
                     quantity=record[0].quantity,
                     product_image=record[0].image,
+                    product_icon=record[0].icon,
                 )
             else:
                 raise HTTPException(
@@ -250,6 +252,7 @@ async def cart_list_items(payload: CartListInput) -> CartListOutput:
                                 description=product[0].description,
                                 quantity=record[0].quantity,
                                 image=product[0].image,
+                                icon=product[0].icon,
                             )
                         )
             return ProductListOutput(products=cart_products)

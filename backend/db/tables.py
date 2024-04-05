@@ -17,6 +17,7 @@ class Product(Base):
     description = Column("Description", Text)
     quantity = Column("Quantity", Integer)
     image = Column("Image", String)
+    icon = Column("Icons", String)
 
 
 class User(Base):

@@ -14,6 +14,7 @@ class Product(BaseModel):
     price: float
     description: str
     image: str
+    icon: str
 
 
 class ProductInCart(Product):
@@ -63,6 +64,7 @@ class ProductDetailsOutput(BaseModel):
     product_price: float
     product_image: str
     quantity: int
+    product_icon: str
 
 
 class ProductRemovalAllInput(BaseModel):
