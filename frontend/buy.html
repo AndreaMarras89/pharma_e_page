@@ -1,4 +1,5 @@
 {% block content %}
+<p>Enter shipping and billing information:</p>
 <form action="{% url 'InvoiceInformation' %}" method="post">
     {% csrf_token %}
     <label for="first_name">First name: </label>
